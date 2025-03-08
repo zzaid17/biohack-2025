@@ -1,4 +1,4 @@
-Age,Gender,BMI,AlcoholConsumption,Smoking,GeneticRisk,PhysicalActivity,Diabetes,Hypertension,LiverFunctionTest,Diagnosis
+age,gender,bmi,alcohol,smoking,risk,activity,diabetes,hypertension,liver_function_Test,diagnosis
 58,0,35.857584148869186,17.27282842593232,0,1,0.6589401821191965,0,0,42.73424003122099,1
 71,1,30.732470150268405,2.2012656840223044,0,1,1.670556694687857,1,0,67.30982160011246,1
 48,0,19.971406944382398,18.50094350686029,0,0,9.92830825444697,0,0,63.738955838709444,0
