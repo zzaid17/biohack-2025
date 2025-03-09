@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Disease Prediction Tool</title>
+  <!-- Google Fonts: Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <!-- External CSS -->
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <header>
+    <!-- SVG Logo in the top-left (twice as big) -->
+    <div class="logo">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+        <!-- Background -->
+        <rect width="200" height="200" rx="40" ry="40" fill="#3498db"/>
+        
+        <!-- DNA Helix Symbol -->
+        <g transform="translate(100, -20) rotate(45) scale(0.55)">
+          <!-- First DNA strand -->
+          <path d="M60,20 Q90,70 60,120 Q90,170 60,220"
+                stroke="#ffffff" stroke-width="12" fill="none"/>
+          
+          <!-- Second DNA strand -->
+          <path d="M180,20 Q150,70 180,120 Q150,170 180,220"
+                stroke="#ffffff" stroke-width="12" fill="none"/>
+          
+          <!-- Connecting bases -->
+          <line x1="60" y1="70" x2="180" y2="70" stroke="#2ecc71" stroke-width="10"/>
+          <line x1="60" y1="120" x2="180" y2="120" stroke="#f39c12" stroke-width="10"/>
+          <line x1="60" y1="170" x2="180" y2="170" stroke="#9b59b6" stroke-width="10"/>
+        </g>
+        
+        <!-- "ZION" text -->
+        <text x="100" y="180" font-family="Arial, sans-serif"
+              font-size="42" font-weight="bold" text-anchor="middle"
+              fill="#ffffff">ZION</text>
+      </svg>
+    </div>
+
+    <!-- Large centered page title -->
+    <h1>Disease Prediction Tool</h1>
+    <h2 class="subtitle">
+      Developed by Zaid Hoda, Noah Elsayed, Tolani Olatunji, and Mutaz Abu-Khader for BioHack 2025 @ University of Calgary
+    </h2>
+  </header>
+
+  <main>
+    <section class="container">
+      <!-- We'll handle the submission via script.js (fetch) -->
+      <form id="predictionForm" class="prediction-form">
+        
+        <!-- Age -->
+        <div class="form-group">
+          <label for="age">Age</label>
+          <input type="number" id="age" name="age" placeholder="Enter your age" required>
+        </div>
+        
+        <!-- Sex -->
+        <div class="form-group">
+          <label for="sex">Sex</label>
+          <select id="sex" name="sex" required>
+            <option value="" disabled selected>Select your sex</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+        </div>
+
+        <!-- BMI -->
+        <div class="form-group">
+          <label for="bmi">BMI</label>
+          <input type="number" step="0.1" id="bmi" name="bmi" placeholder="Enter your BMI" required>
+        </div>
+
+        <!-- Smoking -->
+        <div class="form-group">
+          <label for="smoking">Smoking</label>
+          <select id="smoking" name="smoking" required>
+            <option value="" disabled selected>Select smoking status</option>
+            <option value="never">Never</option>
+            <option value="former">Former</option>
+            <option value="current">Current</option>
+          </select>
+        </div>
+
+        <!-- Alcohol Intake -->
+        <div class="form-group">
+          <label for="alcohol-intake">Alcohol Intake</label>
+          <select id="alcohol-intake" name="alcohol-intake" required>
+            <option value="" disabled selected>Select alcohol consumption level</option>
+            <option value="never">Never</option>
+            <option value="sometimes">Sometimes</option>
+            <option value="often">Often</option>
+          </select>
+        </div>
+
+        <!-- Hypertension -->
+        <div class="form-group">
+          <label for="hypertension">Hypertension</label>
+          <select id="hypertension" name="hypertension" required>
+            <option value="" disabled selected>Select a response</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+        </div>
+
+        <!-- Physical activity -->
+        <div class="form-group">
+          <label for="physical-activity">Physical Activity</label>
+          <select id="physical-activity" name="physical-activity" required>
+            <option value="" disabled selected>Select frequency</option>
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </select>
+        </div>
+
+        <!-- Family History toggles -->
+        <div class="toggle-group">
+          <h3>Family History</h3>
+          <div class="toggle-buttons">
+            <!-- Cancer -->
+            <button type="button"
+                    class="toggle-btn"
+                    id="family-cancer-btn"
+                    onclick="toggleDisease('family-cancer-btn','family-cancer-input')">
+              Cancer
+            </button>
+            <input type="hidden" name="family_cancer" id="family-cancer-input" value="0">
+
+            <!-- Diabetes -->
+            <button type="button"
+                    class="toggle-btn"
+                    id="family-diabetes-btn"
+                    onclick="toggleDisease('family-diabetes-btn','family-diabetes-input')">
+              Diabetes
+            </button>
+            <input type="hidden" name="family_diabetes" id="family-diabetes-input" value="0">
+
+            <!-- Heart Disease -->
+            <button type="button"
+                    class="toggle-btn"
+                    id="family-heart-btn"
+                    onclick="toggleDisease('family-heart-btn','family-heart-input')">
+              Heart Disease
+            </button>
+            <input type="hidden" name="family_heart" id="family-heart-input" value="0">
+
+            <!-- Liver Disease -->
+            <button type="button"
+                    class="toggle-btn"
+                    id="family-liver-btn"
+                    onclick="toggleDisease('family-liver-btn','family-liver-input')">
+              Liver Disease
+            </button>
+            <input type="hidden" name="family_liver" id="family-liver-input" value="0">
+
+            <!-- Stroke -->
+            <button type="button"
+                    class="toggle-btn"
+                    id="family-stroke-btn"
+                    onclick="toggleDisease('family-stroke-btn','family-stroke-input')">
+              Stroke
+            </button>
+            <input type="hidden" name="family_stroke" id="family-stroke-input" value="0">
+          </div>
+        </div>
+
+        <!-- Personal History toggles -->
+        <div class="toggle-group">
+          <h3>Personal History</h3>
+          <div class="toggle-buttons">
+            <!-- Cancer -->
+            <button type="button"
+                    class="toggle-btn"
+                    id="personal-cancer-btn"
+                    onclick="toggleDisease('personal-cancer-btn','personal-cancer-input')">
+              Cancer
+            </button>
+            <input type="hidden" name="personal_cancer" id="personal-cancer-input" value="0">
+
+            <!-- Diabetes -->
+            <button type="button"
+                    class="toggle-btn"
+                    id="personal-diabetes-btn"
+                    onclick="toggleDisease('personal-diabetes-btn','personal-diabetes-input')">
+              Diabetes
+            </button>
+            <input type="hidden" name="personal_diabetes" id="personal-diabetes-input" value="0">
+
+            <!-- Heart Disease -->
+            <button type="button"
+                    class="toggle-btn"
+                    id="personal-heart-btn"
+                    onclick="toggleDisease('personal-heart-btn','personal-heart-input')">
+              Heart Disease
+            </button>
+            <input type="hidden" name="personal_heart" id="personal-heart-input" value="0">
+
+            <!-- Liver Disease -->
+            <button type="button"
+                    class="toggle-btn"
+                    id="personal-liver-btn"
+                    onclick="toggleDisease('personal-liver-btn','personal-liver-input')">
+              Liver Disease
+            </button>
+            <input type="hidden" name="personal_liver" id="personal-liver-input" value="0">
+
+            <!-- Stroke -->
+            <button type="button"
+                    class="toggle-btn"
+                    id="personal-stroke-btn"
+                    onclick="toggleDisease('personal-stroke-btn','personal-stroke-input')">
+              Stroke
+            </button>
+            <input type="hidden" name="personal_stroke" id="personal-stroke-input" value="0">
+          </div>
+        </div>
+
+        <!-- Submit button, centered -->
+        <div class="form-group button-group">
+          <button type="submit" class="submit-btn">Diagnose</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <!-- Modal popup (hidden by default) -->
+  <div id="modalOverlay" class="modal-overlay hidden">
+    <div class="modal-content">
+      <span id="closeModal" class="close-button">&times;</span>
+      <h2>Prediction Results</h2>
+      <div id="modalResults"></div>
+    </div>
+  </div>
+
+  <!-- External JavaScript -->
+  <script src="../static/script.js"></script>
+</body>
+</html>
