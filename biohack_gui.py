@@ -4,20 +4,23 @@ from tkinter import ttk, messagebox
 from PIL import Image, ImageTk
 
 # Color Scheme
-BG_COLOR = "#1E1E2E"   # Dark Blue-Gray Background
-TEXT_COLOR = "#E0E0E0" # Light Gray Text
-BUTTON_COLOR = "#FF5F6D"  # Coral Red (For Main Buttons)
+BG_COLOR = "#3498db"   # Dark Blue-Gray Background
+TEXT_COLOR = "#ffffff" # Light Gray Text
+BUTTON_COLOR = "#f39c12"  # Coral Red (For Main Buttons)
 BUTTON_HOVER = "#E54B5A"  # Slightly Darker Coral Red
-INPUT_BG = "#2A2D3E" # Dark Gray-Blue for Input Fields
+INPUT_BG = "#009900" # Dark Gray-Blue for Input Fields
 INPUT_FG = "#FFFFFF" # White Text for Inputs
 
 # GUI initialization
 root = tk.Tk()
 root.title("Disease Prediction Model")
-root.iconbitmap("download.jpeg")
-root.geometry("600x600")
+root.geometry("570x700")
 root.resizable(False, False)
 root.configure(bg=BG_COLOR)
+
+icon = Image.open("zion-tech-app-icon.png")
+icon = ImageTk.PhotoImage(icon)  # Convert to Tkinter format
+root.wm_iconphoto(True, icon)  # Set the icon
 
 '''
 # Background Image
@@ -33,10 +36,58 @@ canvas.create_image(0, 0, image=bg_photo, anchor="nw")
 
 # Styling
 style = ttk.Style()
-style.configure("TLabel", font=("Poppins", 12), background=BG_COLOR, foreground=TEXT_COLOR, padding=5)
-style.configure("TButton", font=("Poppins", 12), background=BUTTON_COLOR, foreground="white", padding=5)
-style.configure("TEntry", font=("Poppins", 12), background=INPUT_BG, foreground=INPUT_FG)
-style.configure("TCombobox", font=("Poppins", 12), background=INPUT_BG, foreground=INPUT_FG)
+style.theme_use("clam")
+
+# Label Style
+style.configure(
+    "TLabel",
+    font=("Poppins", 12, "bold"),
+    background=BG_COLOR,
+    foreground=TEXT_COLOR,
+    padding=5
+)
+
+# Button Style
+style.configure(
+    "TButton",
+    font=("Poppins", 12, "bold"),
+    background=BUTTON_COLOR,
+    foreground="white",
+    padding=8,
+    borderwidth=2
+)
+style.map("TButton", background=[("active", BUTTON_HOVER)])  # Hover Effect
+
+# Entry Style (Textboxes)
+style.configure(
+    "TEntry",
+    font=("Poppins", 12),
+    fieldbackground=INPUT_BG,  # Textbox background
+    foreground=INPUT_FG,       # Text color
+    borderwidth=2,
+    padding=5
+)
+
+# Checkbox Style
+style.configure(
+    "TCheckbutton",
+    font=("Poppins", 12),
+    background=BG_COLOR,
+    foreground=TEXT_COLOR,
+    padding=5
+)
+style.map("TCheckbutton", background=[("active", BG_COLOR)])  # Ensures no color change on hover
+
+style.configure(
+    "Custom.TCombobox",
+    font=("Poppins", 12),
+    fieldbackground=INPUT_BG,  # Background inside the combobox
+    background=INPUT_BG,       # Background of the dropdown
+    foreground=INPUT_FG,       # Text color
+    arrowcolor=TEXT_COLOR,     # Dropdown arrow color
+    borderwidth=2,
+    padding=5
+)
 
 '''
 # Create a frame for inputs
@@ -48,11 +99,12 @@ frame.pack_propagate(False)
 frame_label = tk.Label(frame, text="Disease Prediction Model", font=("General Sans", 16, "bold"), bg="#ffffff", anchor="w")
 frame_label.grid(row=1, column=0, pady=10)
 '''
-
+'''
 # Global font selection
 LABEL_FONT = ("General Sans", 12, "bold")
 ENTRY_FONT = ("General Sans", 12, "bold")
 BUTTON_FONT = ("General Sans", 12,"bold")
+'''
 
 # Responses
 responses_dict = {}
@@ -60,40 +112,44 @@ responses_dict = {}
 #Current prompts
 curr_prompts = ["Name", "Age", "BMI", "Gender"]
 
+# Top Label
+title_label = tk.Label(root, text="Disease Prediction Model", font=("Poppins", 16, "bold"), bg=BG_COLOR, fg=TEXT_COLOR)
+title_label.grid(row=0, column=0, columnspan=2, pady=10)
+
 # Name
 name_var = tk.StringVar()
-name_label = tk.Label(root, text="1. What is your name? ", font=LABEL_FONT, padx=10, anchor="w", bg=BG_COLOR, fg=TEXT_COLOR)
+name_label = ttk.Label(root, text="1. What is your name? ", style="TLabel")
 name_label.grid(row=2, column=0, sticky="w", pady=(20,5))
 
-name = tk.Entry(root, textvariable=name_var, font=ENTRY_FONT, bg=INPUT_BG, fg=INPUT_FG)
+name = ttk.Entry(root, textvariable=name_var, style="TEntry")
 name.grid(row=2, column=1, sticky="ew", columnspan=2, pady=5)
 
 # Age
 age_var = tk.IntVar()
-age_label = tk.Label(root, text="2. What is your age? ", font=LABEL_FONT, padx=10, anchor="w")
+age_label = ttk.Label(root, text="2. What is your age? ", style="TLabel")
 age_label.grid(row=3, column=0, sticky="w", pady=5)
 
-age = tk.Entry(root, textvariable=age_var, bg=INPUT_BG, fg=INPUT_FG)
+age = ttk.Entry(root, textvariable=age_var, style="TEntry")
 age.grid(row=3, column=1, sticky="ew", columnspan=2, pady=5)
 age_var.set(0)
 
 # Gender
 gender_var = tk.StringVar()
-gender_label = tk.Label(root, text="3. Choose gender: ", font=LABEL_FONT, padx=10, anchor="w")
+gender_label = ttk.Label(root, text="3. Choose gender: ", style="TLabel")
 gender_label.grid(row=4, column=0, sticky="w", pady=5)
 
 gender_values = ["---", "Male", "Female", "Other"]
 
-gender = ttk.Combobox(root, values=gender_values, textvariable=gender_var, bg=INPUT_BG, fg=INPUT_FG)
+gender = ttk.Combobox(root, values=gender_values, textvariable=gender_var, style="Custom.TCombobox")
 gender.grid(row=4, column=1, sticky="ew", columnspan=2)
 gender.set(gender_values[0]) # Set default value and gender.get() for chosen value
 
 # BMI
 bmi_var = tk.IntVar()
-bmi_label = tk.Label(root, text="4. What is your Body Mass Index (BMI): ", font=LABEL_FONT, padx=10, anchor="w")
+bmi_label = ttk.Label(root, text="4. What is your Body Mass Index (BMI): ", style="TLabel")
 bmi_label.grid(row=5, column=0, sticky="w", pady=5)
 
-bmi = tk.Entry(root, textvariable=bmi_var, bg=INPUT_BG, fg=INPUT_FG)
+bmi = ttk.Entry(root, textvariable=bmi_var, style="TEntry")
 bmi.grid(row=5, column=1, sticky="ew", columnspan=2, pady=5)
 bmi_var.set(0)
 
@@ -112,20 +168,20 @@ curr_len = len(curr_prompts) + 2
 
 for i, prompt in enumerate(prompts):
    curr_len = curr_len+i
-   tk.Label(root, text=prompt, font=LABEL_FONT, padx=10, anchor="w").grid(row=curr_len, column=0, sticky="w", pady=5)
+   ttk.Label(root, text=prompt, style="TLabel").grid(row=curr_len, column=0, sticky="w", pady=5)
    var = tk.StringVar()
    prompt_vars[prompt_keys[i]] = var
-   combobox = ttk.Combobox(root, values=prompts_options, textvariable=var)
+   combobox = ttk.Combobox(root, values=prompts_options, textvariable=var, style="Custom.TCombobox")
    combobox.grid(row=curr_len, column=1, sticky="ew", columnspan=2)
    combobox.set(prompts_options[0])
 
-curr_len = curr_len+len(prompt_keys)
+curr_len = curr_len+len(prompt_keys) +1
 
 # Diseases 
 selected_diseases = {}
 diseases = ["Cancer", "Diabetes", "Heart Diseases", "Liver Problems", "Stroke"]
 
-diseases_label = tk.Label(root, text="Do you have a history with any disease below? Check all that apply.", pady=5, padx=10, anchor="center", font=LABEL_FONT)
+diseases_label = ttk.Label(root, text="Do you have a history with any disease below? Check all that apply.", style="TLabel")
 diseases_label.grid(row=curr_len, column=0, columnspan=2, sticky="ew")
 
 curr_len += 1
@@ -137,9 +193,7 @@ checkbox_frame.grid(row=curr_len, column=0, columnspan=2, pady=5)
 for i, disease in enumerate(diseases):
     #curr_len = curr_len + i + 1
     selected_diseases[disease] = tk.BooleanVar()
-    chk = tk.Checkbutton(checkbox_frame, text=disease, font=BUTTON_FONT, variable=selected_diseases[disease],
-                     anchor="w", bg=BG_COLOR, fg=TEXT_COLOR, activebackground=BG_COLOR,
-                     activeforeground=TEXT_COLOR, selectcolor=BG_COLOR)  # Removes white select box
+    chk = ttk.Checkbutton(checkbox_frame, text=disease, style="TCheckbutton")  # Removes white select box
 
     chk.pack(fill="x", anchor="w", padx=20, pady=2)
    
@@ -167,7 +221,7 @@ def collect_responses(): #This tests all values were properly gotten
     bmi_var.set(0)
 
 curr_len = curr_len+1
-final_vals_button = tk.Button(root, text="Submit Values", command=collect_responses, font=BUTTON_FONT, bg="blue", fg="white", padx=10, pady=5)
+final_vals_button = ttk.Button(root, text="Submit Values", command=collect_responses, style="TButton")
 final_vals_button.grid(row=curr_len, column=0, sticky='ew', columnspan=3, pady=10, padx=20)
 
 root.mainloop()
