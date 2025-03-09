@@ -193,35 +193,65 @@ checkbox_frame.grid(row=curr_len, column=0, columnspan=2, pady=5)
 for i, disease in enumerate(diseases):
     #curr_len = curr_len + i + 1
     selected_diseases[disease] = tk.BooleanVar()
-    chk = ttk.Checkbutton(checkbox_frame, text=disease, style="TCheckbutton")  # Removes white select box
+    chk = ttk.Checkbutton(checkbox_frame, variable=selected_diseases[disease], 
+                          text=disease, style="TCheckbutton")  # Removes white select box
 
     chk.pack(fill="x", anchor="w", padx=20, pady=2)
    
 # Functions
-def collect_responses(): #This tests all values were properly gotten
-    
+
+def collect_responses():  
+    # Store responses in a dictionary
     responses_dict["Name"] = name_var.get()
     responses_dict["Age"] = age_var.get()
     responses_dict["Gender"] = gender_var.get()
     responses_dict["BMI"] = bmi_var.get()
 
     for key in prompt_keys:
-       responses_dict[key] = prompt_vars[key].get()
+        responses_dict[key] = prompt_vars[key].get()
 
     for disease in diseases:
-     responses_dict[disease] = selected_diseases[disease].get()
+        responses_dict[disease] = "Yes" if selected_diseases[disease].get() else "No"
 
-    #tk.Label(frame, text=f"{responses_dict}").grid(row = curr_len+1, column=0)
-    messagebox.showinfo("Collected Data", f"Here are your final responses: {responses_dict}")
+    # Create a new popup window
+    popup = tk.Toplevel(root)
+    popup.title("Collected Data")
+    popup.geometry("500x400")
+    popup.configure(bg=BG_COLOR)
+    
+    # Popup Title
+    title_label = ttk.Label(popup, text="Your Submitted Responses", style="TLabel", font=("Poppins", 14, "bold"))
+    title_label.pack(pady=10)
 
-    # Clear boxes
-    name_var.set("")
-    age_var.set(0)
-    gender_var.set()
-    bmi_var.set(0)
+    # Format the response text
+    response_text = "\n".join([f"{key}: {value}" for key, value in responses_dict.items()])
+
+    # Create a Textbox to show the responses
+    text_box = tk.Text(
+        popup, font=("Poppins", 12), height=15, width=50, 
+        bg=INPUT_BG, fg=TEXT_COLOR, wrap="word", bd=0
+    )
+    text_box.insert(tk.END, response_text)
+    text_box.pack(pady=5, padx=10)
+    text_box.config(state=tk.DISABLED)  # Prevent Editing
+
+    # Close Button
+    close_button = ttk.Button(popup, text="Close", command=popup.destroy, style="TButton")
+    close_button.pack(pady=10)
+
+def confirm_close():
+    response = messagebox.askyesno("Confirm Exit", "Are you sure you want to close the application?")
+    if response:  # If user clicks "Yes"
+        root.destroy()
 
 curr_len = curr_len+1
+
 final_vals_button = ttk.Button(root, text="Submit Values", command=collect_responses, style="TButton")
 final_vals_button.grid(row=curr_len, column=0, sticky='ew', columnspan=3, pady=10, padx=20)
+
+curr_len+=1
+# Close Button
+close_button = ttk.Button(root, text="Close", command=confirm_close, style="TButton")
+close_button.grid(row=curr_len, column=0, sticky='ew', columnspan=3, pady=10, padx=20)
 
 root.mainloop()
