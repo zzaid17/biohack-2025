@@ -10,50 +10,104 @@ class DiseasePredictionApp:
         self.root.resizable(False, False)
         self.root.configure(bg="#3498db")  # Dark Blue-Gray Background
 
-        # Load Icon
+        # Icon
         icon = Image.open("zion-tech-app-icon.png")
         self.icon = ImageTk.PhotoImage(icon)
         self.root.wm_iconphoto(True, self.icon)
 
-        # Define Variables
+        # Define variables
         self.responses_dict = {}
         self.personal_history = {}
         self.family_history = {}
         self.prompt_vars = {}
         self.popup = None
 
-        # Define Prompts
-        self.prompts = ["5. Do you smoke?", "6. Do you drink?", "7. Do you have high blood pressure?", "8. Do you have Diabetes?", "9. What is your activity level?"]
+        # Define prompt keys
+        self.prompts = [
+            "5. Do you smoke?",
+            "6. Do you drink?",
+            "7. Do you have high blood pressure?",
+            "8. Do you have Diabetes?",
+            "9. What is your activity level?"
+        ]
         self.prompts_options = ["---", "Yes", "No"]
         self.prompt8_options = ["---", "Low", "Medium", "High"]
         self.prompt_keys = ["Blood Pressure", "Drink", "Smoke", "diabetes", "Activity Level"]
         self.diseases = ["Cancer", "Diabetes", "Heart Diseases", "Liver Problems", "Stroke"]
 
-        # Create GUI
+        # Create GUI Components
         self.create_styles()
         self.create_widgets()
 
     def create_styles(self):
-        """ Setup Tkinter Styles """
+        """ Set up the styling for the application. """
         style = ttk.Style()
         style.theme_use("clam")
 
-        style.configure("TLabel", font=("Poppins", 12, "bold"), background="#3498db", foreground="#ffffff", padding=5)
-        style.configure("TButton", font=("Poppins", 12, "bold"), background="#f39c12", foreground="white", padding=8, borderwidth=2)
-        style.map("TButton", background=[("active", "#E54B5A")])
+        # Label Style
+        style.configure(
+            "TLabel",
+            font=("Poppins", 12, "bold"),
+            background="#3498db",
+            foreground="#ffffff",
+            padding=5
+        )
 
-        style.configure("TEntry", font=("Poppins", 12), fieldbackground="#009900", foreground="#FFFFFF", borderwidth=2, padding=5)
+        # Button Style
+        style.configure(
+            "TButton",
+            font=("Poppins", 12, "bold"),
+            background="#f39c12",
+            foreground="white",
+            padding=8,
+            borderwidth=2
+        )
+        style.map("TButton", background=[("active", "#E54B5A")])  # Hover Effect
 
-        style.configure("TCheckbutton", font=("Poppins", 12), background="#3498db", foreground="#ffffff", padding=5)
+        # Entry Style (Textboxes)
+        style.configure(
+            "TEntry",
+            font=("Poppins", 12),
+            fieldbackground="#009900",
+            foreground="#FFFFFF",
+            borderwidth=2,
+            padding=5
+        )
+
+        # Checkbox Style
+        style.configure(
+            "TCheckbutton",
+            font=("Poppins", 12),
+            background="#3498db",
+            foreground="#ffffff",
+            padding=5
+        )
         style.map("TCheckbutton", background=[("active", "#3498db")])
 
-        style.configure("Custom.TCombobox", font=("Poppins", 12), fieldbackground="#009900", background="#009900", foreground="#FFFFFF", arrowcolor="#ffffff", borderwidth=2, padding=5)
-        style.map("Custom.TCombobox", fieldbackground=[("readonly", "#009900")], foreground=[("readonly", "#FFFFFF")])
+        # ComboBox Style
+        style.configure(
+            "Custom.TCombobox",
+            font=("Poppins", 12),
+            fieldbackground="#009900",
+            background="#009900",
+            foreground="#FFFFFF",
+            arrowcolor="#ffffff",
+            borderwidth=2,
+            padding=5
+        )
+        style.map("Custom.TCombobox",
+                  fieldbackground=[("readonly", "#009900")],
+                  foreground=[("readonly", "#FFFFFF")])
 
     def create_widgets(self):
-        """ Create the main GUI components """
-        tk.Label(self.root, text="Disease Prediction Model", font=("Poppins", 16, "bold"), bg="#3498db", fg="#ffffff").grid(row=0, column=0, columnspan=2, pady=10)
-        tk.Label(self.root, text="Please answer the questions below for a prediction.", font=("Poppins", 12), bg="#3498db", fg="#ffffff").grid(row=1, column=0, columnspan=2, pady=10)
+        """ Create the widgets for the GUI. """
+        # Title
+        title_label = tk.Label(self.root, text="Disease Prediction Model", font=("Poppins", 16, "bold"), bg="#3498db", fg="#ffffff")
+        title_label.grid(row=0, column=0, columnspan=2, pady=10)
+
+        # Subtitle
+        subtitle_label = tk.Label(self.root, text="Please answer the questions below for a prediction.", font=("Poppins", 12), bg="#3498db", fg="#ffffff")
+        subtitle_label.grid(row=1, column=0, columnspan=2, pady=10)
 
         # Input Fields
         self.name_var = tk.StringVar()
@@ -72,17 +126,25 @@ class DiseasePredictionApp:
             ttk.Label(self.root, text=prompt, style="TLabel").grid(row=row_index, column=0, sticky="w", pady=5)
             var = tk.StringVar(value="---")
             self.prompt_vars[self.prompt_keys[i]] = var
-            self.create_combobox("", self.prompt8_options if prompt == self.prompts[-1] else self.prompts_options, var, row_index)
+
+            if prompt == self.prompts[-1]:  # Activity level dropdown
+                self.create_combobox("", self.prompt8_options, var, row_index)
+            else:
+                self.create_combobox("", self.prompts_options, var, row_index)
+
             row_index += 1
 
         # Disease Checkboxes
         self.create_checkboxes(row_index)
 
-        # Buttons
+        # Submit and Close Buttons
         row_index += len(self.diseases) + 2
-        ttk.Button(self.root, text="Submit Values", command=self.collect_responses, style="TButton").grid(row=row_index, column=0, columnspan=2, pady=10)
+        submit_button = ttk.Button(self.root, text="Submit Values", command=self.collect_responses, style="TButton")
+        submit_button.grid(row=row_index, column=0, columnspan=2, pady=10)
+
         row_index += 1
-        ttk.Button(self.root, text="Close", command=self.root.quit, style="TButton").grid(row=row_index, column=0, columnspan=2, pady=10)
+        close_button = ttk.Button(self.root, text="Close", command=self.root.quit, style="TButton")
+        close_button.grid(row=row_index, column=0, columnspan=2, pady=10)
 
     def create_entry(self, label_text, var, row, num=False):
         ttk.Label(self.root, text=label_text, style="TLabel").grid(row=row, column=0, sticky="w", pady=5)
@@ -99,6 +161,7 @@ class DiseasePredictionApp:
 
     def create_checkboxes(self, row):
         ttk.Label(self.root, text="Do you have a history with any disease below? Check all that apply.", style="TLabel").grid(row=row, column=0, columnspan=2, sticky="ew")
+
         row += 1
         for disease in self.diseases:
             self.personal_history[disease] = tk.BooleanVar()
@@ -111,24 +174,7 @@ class DiseasePredictionApp:
         if isinstance(var.get(), (int, float)) and var.get() in (0, 0.0):
             event.widget.delete(0, tk.END)
 
-    def collect_responses(self):
-        """ Collect responses and display them in a popup """
-        if self.popup:
-            self.popup.destroy()
-        self.popup = tk.Toplevel(self.root)
-        self.popup.title("Collected Data")
-        self.popup.geometry("500x400")
-        self.popup.configure(bg="#3498db")
-
-        responses_text = "\n".join(f"{key}: {var.get()}" for key, var in self.prompt_vars.items())
-        text_box = tk.Text(self.popup, font=("Poppins", 12), height=15, width=50, bg="#009900", fg="#FFFFFF", wrap="word", bd=0)
-        text_box.insert(tk.END, responses_text)
-        text_box.config(state=tk.DISABLED)
-        text_box.pack(pady=5, padx=10)
-
-        ttk.Button(self.popup, text="Close", command=self.popup.destroy, style="TButton").pack(pady=10)
-
-# Run App
+# Run the Application
 if __name__ == "__main__":
     root = tk.Tk()
     app = DiseasePredictionApp(root)
