@@ -1,47 +1,104 @@
-import os
 import pickle
+import numpy as np
+import pandas as pd
 
-path = 'models/'
+def load_models():
+    """ 
+    Load all five disease prediction models from .pkl files 
 
-def load_model(file_path):
-    with open(file_path, 'rb') as file:
-        model = pickle.load(file)
-    return model
-
-def load_all_models():
-    model_files = [
-        f"{path}cancer_model.pkl", 
-        f"{path}diabetes_model.pkl",
-        f"{path}heart_model.pkl",
-        f"{path}liver_model.pkl",
-        f"{path}stroke_model.pkl"
-    ]
+    Args:
+    None
+    
+    Returns:
+    models (dict): a dictionary of disease models
+    """
     models = {}
-    for model_file in model_files:
-        models[model_file] = load_model(model_file)
+    diseases = ["cancer", "diabetes", "heart", "liver", "stroke"]
+    
+    for disease in diseases:
+        try:
+            with open(f"models/{disease}_model.pkl", "rb") as file:
+                models[disease] = pickle.load(file)
+        except FileNotFoundError:
+            print(f"Warning: Model file for {disease} not found.")
+            models[disease] = None
+    
     return models
 
-unique_non_numeric_cols = ['activity', 'age', 'alcohol', 'bmi', 'cancer_history', 'diabetes', 'gender', 'genetic_risk', 'heart_disease', 'hypertension', 'smoking']
-
-def calculate_outcome(data):
-    all_models = load_all_models()
+def prepare_data(inputs: dict) -> dict:
+    """ 
+    Convert input data into a np array suitable for model prediction 
     
-    return model.predict([input_data])
+    Args:
+    inputs (dict): a dictionary of input data
 
+    Returns:
+    disease_dfs (dict): a dictionary of ready input dataframes
+    """
+
+    try:
+
+        # sort keys 
+        sorted_keys = sorted(inputs.keys())
+
+        # base df with sorted cols
+        base_df = pd.DataFrame([inputs], columns=sorted_keys)
+        base_df = pd.create_sorted_df(inputs)
+
+        # cols to keep for each dataset
+        disease_columns = {
+        'cancer': ['activity', 'age', 'alcohol', 'bmi', 'cancer_history', 'gender', 'genetic_risk', 'smoking'],
+        'diabetes': ['age', 'bmi', 'gender', 'heart_disease', 'hypertension', 'smoking'],
+        'heart': ['activity', 'age', 'alcohol', 'bmi', 'diabetes', 'gender', 'genetic_risk', 'hypertension', 'smoking'],
+        'liver': ['activity', 'age', 'alcohol', 'bmi', 'diabetes', 'gender', 'hypertension', 'genetic_risk', 'smoking'],
+        'stroke': ['age', 'bmi', 'gender', 'heart_disease', 'hypertension', 'smoking']
+        }
+
+        # new df for each disease
+        disease_dfs = {disease: base_df[cols].copy() for disease, cols in disease_columns.items()}
+        
+        return disease_dfs
+    except Exception as e:
+        print(f"Error in preparing data: {e}")
+        return None
+
+def predict_diseases(inputs: dict, models: dict) -> dict:
+    """ 
+    Use the trained models to predict the risk of each disease based on input data 
+    
+    Args:
+    inputs (dict): a dictionary of input data
+    models (dict): a dictionary of disease models
+
+    Returns:
+    results (dict): a dictionary of disease risk predictions
+    """
+    results = {}
+    input_data = prepare_data(inputs)
+    
+    if input_data is None:
+        return {disease: "Error in input data" for disease in models.keys()}
+    
+    for disease, model in models.items():
+        if model is not None:
+            prediction = model.predict(input_data)[0]
+            results[disease] = "High Risk" if prediction == 1 else "Low Risk"
+        else:
+            results[disease] = "Model not available"
+    
+    return results
+
+# Load models once when the module is imported
+models = load_models()
+
+def get_disease_risk(user_inputs):
+    """ Public function to get disease risk predictions based on user input """
+    return predict_diseases(user_inputs, models)
 
 
 if __name__ == "__main__":
-    all_feature_names = set()
-    models = load_all_models()
-    print("Model input requirements:")
-    for model_name in models.values():
-        print(model_name.n_features_in_)  # Prints the number of features the model expects
-        
-        # Add feature names to the set (will automatically handle duplicates)
-        all_feature_names.update(model_name.feature_names_in_)
+    # Test the functions
+    load_models()
 
-    sorted_feature_names = sorted(all_feature_names)
 
-    # Print the set of all unique feature names
-    print("All unique feature names:", sorted_feature_names)
-
+    # unique_non_numeric_cols = ['activity', 'age', 'alcohol', 'bmi', 'cancer_history', 'diabetes', 'gender', 'genetic_risk', 'heart_disease', 'hypertension', 'smoking']

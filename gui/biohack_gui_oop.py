@@ -11,7 +11,7 @@ class DiseasePredictionApp:
         self.root.configure(bg="#3498db")  # Dark Blue-Gray Background
 
         # Load Icon
-        icon = Image.open("zion-tech-app-icon.png")
+        icon = Image.open("gui/zion-tech-app-icon.png")
         self.icon = ImageTk.PhotoImage(icon)
         self.root.wm_iconphoto(True, self.icon)
 
