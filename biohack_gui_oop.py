@@ -61,7 +61,7 @@ class DiseasePredictionApp:
         
         self.selected_diseases = {}
         diseases = ["Cancer", "Diabetes", "Heart Diseases", "Liver Problems", "Stroke"]
-        ttk.Label(self.root, text="Do you have a history with any disease below? Check all that apply.", style="TLabel").grid(row=8, column=0, columnspan=2, sticky="ew")
+        ttk.Label(self.root, text="Do you have family history of any disease below? Check all that apply.", style="TLabel").grid(row=8, column=0, columnspan=2, sticky="ew")
         self.checkbox_frame = tk.Frame(self.root, bg=self.BG_COLOR)
         self.checkbox_frame.grid(row=9, column=0, columnspan=2, pady=5)
         for disease in diseases:
