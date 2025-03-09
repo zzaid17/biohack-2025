@@ -1,6 +1,15 @@
 import pickle
-import numpy as np
 import pandas as pd
+
+def create_sorted_df(input_dict):
+    # Sort keys alphabetically
+    sorted_keys = sorted(input_dict.keys())
+
+    # Create DataFrame with sorted columns
+    df = pd.DataFrame([input_dict], columns=sorted_keys)
+    
+    return df
+
 
 def load_models():
     """ 
@@ -25,6 +34,8 @@ def load_models():
     
     return models
 
+
+
 def prepare_data(inputs: dict) -> dict:
     """ 
     Convert input data into a np array suitable for model prediction 
@@ -43,7 +54,7 @@ def prepare_data(inputs: dict) -> dict:
 
         # base df with sorted cols
         base_df = pd.DataFrame([inputs], columns=sorted_keys)
-        base_df = pd.create_sorted_df(inputs)
+        base_df = create_sorted_df(inputs)
 
         # cols to keep for each dataset
         disease_columns = {
@@ -108,7 +119,5 @@ def get_disease_risk(user_inputs: dict) -> dict:
 
 if __name__ == "__main__":
     # Test the functions
-    load_models()
-
-
+    
     # unique_non_numeric_cols = ['activity', 'age', 'alcohol', 'bmi', 'cancer_history', 'diabetes', 'gender', 'genetic_risk', 'heart_disease', 'hypertension', 'smoking']

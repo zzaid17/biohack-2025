@@ -112,22 +112,53 @@ class DiseasePredictionApp:
         if isinstance(var.get(), (int, float)) and var.get() in (0, 0.0):
             event.widget.delete(0, tk.END)
 
+    from functions import get_disease_risk  # Ensure this function is correctly defined
+
     def collect_responses(self):
-        """ Collect responses and display them in a popup """
+        """ Collect responses, process data, and display results """
         if self.popup:
             self.popup.destroy()
+
+        # Determine if there's a personal or family history of specific diseases
+        def has_history(disease):
+            return "Yes" if self.personal_history[disease].get() or self.family_history[disease].get() else "No"
+
+        user_data = {
+            "activity": self.prompt_vars["Activity Level"].get(),
+            "age": self.age_var.get(),
+            "alcohol": self.prompt_vars["Drink"].get(),
+            "bmi": self.bmi_var.get(),
+            "cancer_history": has_history("Cancer"),
+            "diabetes": self.prompt_vars["diabetes"].get(),
+            "gender": self.gender_var.get(),
+            "genetic_risk": "Yes" if any(self.family_history[d].get() for d in self.diseases) else "No",
+            "heart_disease": has_history("Heart Diseases"),
+            "hypertension": self.prompt_vars["Blood Pressure"].get(),
+            "smoking": self.prompt_vars["Smoke"].get(),
+        }
+
+        # Call the risk prediction function
+        try:
+            risk_predictions = get_disease_risk(user_data)  # Ensure this function matches the expected inputs
+        except Exception as e:
+            messagebox.showerror("Error", f"Prediction failed: {e}")
+            return
+
+        # Show results in a popup
         self.popup = tk.Toplevel(self.root)
-        self.popup.title("Collected Data")
+        self.popup.title("Disease Risk Predictions")
         self.popup.geometry("500x400")
         self.popup.configure(bg="#3498db")
 
-        responses_text = "\n".join(f"{key}: {var.get()}" for key, var in self.prompt_vars.items())
         text_box = tk.Text(self.popup, font=("Poppins", 12), height=15, width=50, bg="#009900", fg="#FFFFFF", wrap="word", bd=0)
-        text_box.insert(tk.END, responses_text)
+        result_text = "\n".join(f"{disease}: {risk}" for disease, risk in risk_predictions.items())
+        text_box.insert(tk.END, result_text)
         text_box.config(state=tk.DISABLED)
         text_box.pack(pady=5, padx=10)
 
         ttk.Button(self.popup, text="Close", command=self.popup.destroy, style="TButton").pack(pady=10)
+
+
 
 # Run App
 if __name__ == "__main__":
