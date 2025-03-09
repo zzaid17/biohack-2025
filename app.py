@@ -24,13 +24,7 @@ def prepare_data(inputs: dict) -> dict:
     Convert input data into DataFrames suitable for each model’s prediction.
     This is your original logic. 
     """
-    try:
-        # You have a function create_sorted_df, etc. in your original code
-        # For brevity, I skip certain details. The important part:
-        
-        # We’ll build a base DataFrame from the user inputs. 
-        # Then produce separate subsets for each disease model.
-        
+    try:        
         base_df = pd.DataFrame([inputs])
         
         disease_columns = {

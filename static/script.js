@@ -1,11 +1,4 @@
-/* 
-   script.js
-   1) Toggle Button Logic
-   2) Intercept Form Submission -> fetch predictions
-   3) Show results in a modal
-*/
-
-// ========== 1) Toggle Button Logic ==========
+// Toggle button 
 function toggleDisease(buttonId, inputId) {
   const button = document.getElementById(buttonId);
   const hiddenInput = document.getElementById(inputId);
@@ -18,7 +11,7 @@ function toggleDisease(buttonId, inputId) {
   }
 }
 
-// ========== 2) Intercept Form Submission ==========
+// Form submission
 const predictionForm = document.getElementById('predictionForm');
 predictionForm.addEventListener('submit', async function(event) {
   event.preventDefault(); // stop normal form submission
@@ -33,10 +26,9 @@ predictionForm.addEventListener('submit', async function(event) {
       body: formData
     });
     const data = await response.json();
-    // data should look like:
-    // { "cancer": "High Risk", "diabetes": "Low Risk", ... }
+    // Receive data in dictionary form. For example: { "cancer": "High Risk", "diabetes": "Low Risk", ... }
 
-    // Create a mapping of disease keys to desired display names
+    // Map disease keys to display names
     const diseaseNames = {
       cancer: "Cancer",
       diabetes: "Diabetes",
@@ -45,13 +37,12 @@ predictionForm.addEventListener('submit', async function(event) {
       stroke: "Stroke"
     };
 
-    // Build results HTML
+    // Build results in HTML
     let html = '<table style="width:100%;">';
     html += '<tr><th>Disease</th><th>Risk</th></tr>';
 
     for (const disease in data) {
-      // Use the mapping if it exists, otherwise just capitalize the first letter
-      // or leave it as-is. Here, we default to normal case if not in the map.
+      // Use existing mapping if it exists
       const displayName = diseaseNames[disease] || disease;
 
       html += `<tr><td>${displayName}</td><td>${data[disease]}</td></tr>`;
@@ -72,7 +63,7 @@ predictionForm.addEventListener('submit', async function(event) {
   }
 });
 
-// ========== 3) Close Modal Logic ==========
+// Close modal
 const closeModalBtn = document.getElementById('closeModal');
 closeModalBtn.addEventListener('click', () => {
   document.getElementById('modalOverlay').classList.add('hidden');
