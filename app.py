@@ -20,10 +20,6 @@ def load_models():
     return models
 
 def prepare_data(inputs: dict) -> dict:
-    """
-    Convert input data into DataFrames suitable for each model’s prediction.
-    This is your original logic. 
-    """
     try:        
         base_df = pd.DataFrame([inputs])
         
