@@ -10,36 +10,25 @@
 </head>
 <body>
   <header>
-    <!-- SVG Logo in the top-left (twice as big) -->
+    <!-- Logo -->
     <div class="logo">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-        <!-- Background -->
         <rect width="200" height="200" rx="40" ry="40" fill="#3498db"/>
-        
-        <!-- DNA Helix Symbol -->
         <g transform="translate(100, -20) rotate(45) scale(0.55)">
-          <!-- First DNA strand -->
           <path d="M60,20 Q90,70 60,120 Q90,170 60,220"
                 stroke="#ffffff" stroke-width="12" fill="none"/>
-          
-          <!-- Second DNA strand -->
           <path d="M180,20 Q150,70 180,120 Q150,170 180,220"
                 stroke="#ffffff" stroke-width="12" fill="none"/>
-          
-          <!-- Connecting bases -->
           <line x1="60" y1="70" x2="180" y2="70" stroke="#2ecc71" stroke-width="10"/>
           <line x1="60" y1="120" x2="180" y2="120" stroke="#f39c12" stroke-width="10"/>
           <line x1="60" y1="170" x2="180" y2="170" stroke="#9b59b6" stroke-width="10"/>
         </g>
-        
-        <!-- "ZION" text -->
         <text x="100" y="180" font-family="Arial, sans-serif"
               font-size="42" font-weight="bold" text-anchor="middle"
               fill="#ffffff">ZION</text>
       </svg>
     </div>
 
-    <!-- Large centered page title -->
     <h1>Disease Prediction Tool</h1>
     <h2 class="subtitle">
       Developed by Zaid Hoda, Noah Elsayed, Tolani Olatunji, and Mutaz Abu-Khader for BioHack 2025 @ University of Calgary
@@ -48,7 +37,6 @@
 
   <main>
     <section class="container">
-      <!-- We'll handle the submission via script.js (fetch) -->
       <form id="predictionForm" class="prediction-form">
         
         <!-- Age -->
@@ -105,7 +93,7 @@
           </select>
         </div>
 
-        <!-- Physical activity -->
+        <!-- Physical Activity -->
         <div class="form-group">
           <label for="physical-activity">Physical Activity</label>
           <select id="physical-activity" name="physical-activity" required>
@@ -116,7 +104,7 @@
           </select>
         </div>
 
-        <!-- Family History toggles -->
+        <!-- Family History Buttons -->
         <div class="toggle-group">
           <h3>Family History</h3>
           <div class="toggle-buttons">
@@ -167,7 +155,7 @@
           </div>
         </div>
 
-        <!-- Personal History toggles -->
+        <!-- Personal History Buttons -->
         <div class="toggle-group">
           <h3>Personal History</h3>
           <div class="toggle-buttons">
@@ -218,7 +206,7 @@
           </div>
         </div>
 
-        <!-- Submit button, centered -->
+        <!-- Submit button -->
         <div class="form-group button-group">
           <button type="submit" class="submit-btn">Diagnose</button>
         </div>
@@ -226,7 +214,7 @@
     </section>
   </main>
 
-  <!-- Modal popup (hidden by default) -->
+  <!-- Modal popup -->
   <div id="modalOverlay" class="modal-overlay hidden">
     <div class="modal-content">
       <span id="closeModal" class="close-button">&times;</span>
@@ -235,7 +223,7 @@
     </div>
   </div>
 
-  <!-- External JavaScript -->
+  <!-- Import JS script -->
   <script src="../static/script.js"></script>
 </body>
 </html>

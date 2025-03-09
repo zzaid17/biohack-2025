@@ -1,18 +1,10 @@
-# app.py
 from flask import Flask, request, render_template, jsonify
 import pickle
 import pandas as pd
 import os
 
-# If your existing code is in a separate file, you can import it:
-# from backend_code import get_disease_risk, load_models
-# But here, I'll just inline the essential parts from your snippet.
-
 app = Flask(__name__)
 
-############################################################
-# 1) Reuse your existing code in app.py (or import from separate file)
-############################################################
 def load_models():
     models = {}
     diseases = ["cancer", "diabetes", "heart", "liver", "stroke"]
@@ -39,7 +31,7 @@ def prepare_data(inputs: dict) -> dict:
         # We’ll build a base DataFrame from the user inputs. 
         # Then produce separate subsets for each disease model.
         
-        base_df = pd.DataFrame([inputs])  # simplistic approach
+        base_df = pd.DataFrame([inputs])
         
         disease_columns = {
             'cancer': ['activity', 'age', 'alcohol', 'bmi', 'cancer_history',
@@ -54,11 +46,10 @@ def prepare_data(inputs: dict) -> dict:
         
         disease_dfs = {}
         for disease, cols in disease_columns.items():
-            # Some columns might not be present if you haven't mapped them
-            # so let's fill missing ones with 0 or "none" as needed
+            # Fill missing columns with 0
             for c in cols:
                 if c not in base_df.columns:
-                    base_df[c] = 0  # or some default
+                    base_df[c] = 0
             disease_dfs[disease] = base_df[cols].copy()
         
         return disease_dfs
@@ -88,61 +79,44 @@ def get_disease_risk(user_inputs: dict) -> dict:
     results = predict_diseases(user_inputs, models)
     return results
 
-
-############################################################
-# 2) Serve your front-end
-############################################################
+# Serve front-end
 @app.route('/', methods=['GET'])
 def index():
     # Renders templates/index.html
     return render_template('index.html')
 
-
-############################################################
-# 3) Form submission endpoint
-############################################################
+# Form submission endpoint
 @app.route('/predict', methods=['POST'])
 def predict():
-    """
-    This route receives form data from your big HTML form. 
-    We'll parse the fields, build the dictionary, and call get_disease_risk().
-    Then we return JSON or a rendered result page.
-    """
-    # 1) Collect the form data
+    # Collect form data
     form = request.form
     
-    # Example: your front-end fields (some are toggles, some are numeric, etc.)
-    # We'll parse them as strings, then convert to int/float where needed.
-    
+    # Parse form inputs
     age = form.get('age', type=int)
-    sex = form.get('sex')  # "male" or "female"
+    sex = form.get('sex')  # male or female
     bmi = form.get('bmi', type=float)
-    smoking = form.get('smoking')  # "never", "former", "current"
-    alcohol = form.get('alcohol-intake')  # "low", "medium", "high"
-    hypertension = form.get('hypertension')  # "yes" or "no"
-    physical_activity = form.get('physical-activity')  # "low", "medium", "high"
+    smoking = form.get('smoking')  # never, former, or current
+    alcohol = form.get('alcohol-intake')  # never, sometimes, often
+    hypertension = form.get('hypertension')  # yes or no
+    physical_activity = form.get('physical-activity')  # low, medium, high
     
-    # The toggles for family/personal disease come as "0" or "1"
+    # 0 or 1 for family or personal cancer history
     family_cancer = form.get('family_cancer', '0')
     personal_cancer = form.get('personal_cancer', '0')
-    # etc. for diabetes, heart, liver, stroke...
     
-    # 2) Map them to the keys your model code expects
-    # For example, your original code expects:
-    #    "cancer_history", "genetic_risk", "heart_disease", "diabetes", ...
-    # But you now have toggles for personal/family. You decide how to interpret.
-    # Let's do a silly example where "personal_cancer" => "cancer_history" = 1 if toggled
-    # "family_cancer" => "genetic_risk" = 1 if toggled. 
-    # This is just an example - adapt logic as you prefer.
+    # Map inputs to keys for model
+    # personal_cancer = 1 --> cancer_history = 1
+    # family_cancer = 1 --> genetic_risk = 1
     
     user_inputs = {
         "age": age,
-        "gender": 1 if sex == "male" else 0,    # Example numeric
+        # We encode male to be 1 and female to be 0. Note that this does NOT match the datasets we used
+        # but we encoded it separately in our scikit-learn-modelling notebook.
+        "gender": 1 if sex == "male" else 0,
         "bmi": bmi,
-        
-        "smoking": 0,   # We'll code it: never=0, former=1, current=2
-        "alcohol": 0,   # low=0, medium=1, high=2
-        "activity": 0,  # low=0, medium=1, high=2
+        "smoking": 0,   # never=0, former=1, current=1
+        "alcohol": 0,   # low=0, medium=0.5, high=1
+        "activity": 0,  # low=0, medium=0.5, high=1
         
         "cancer_history": 1 if personal_cancer == "1" else 0,
         "genetic_risk": 1 if family_cancer == "1" else 0,
@@ -151,53 +125,47 @@ def predict():
         "hypertension": 1 if hypertension == "yes" else 0,
     }
     
-    # We'll do a quick map:
+    # Map dropdown inputs to numerical values
     if smoking == "never":
         user_inputs["smoking"] = 0
     elif smoking == "former":
         user_inputs["smoking"] = 1
-    else:
-        user_inputs["smoking"] = 2
+    elif smoking == "current":
+        user_inputs["smoking"] = 1
     
-    if alcohol == "medium":
+    if alcohol == "never":
+        user_inputs["alcohol"] = 0
+    elif alcohol == "sometimes":
+        user_inputs["alcohol"] = 0.5
+    elif alcohol == "often":
         user_inputs["alcohol"] = 1
-    elif alcohol == "high":
-        user_inputs["alcohol"] = 2
     
-    if physical_activity == "medium":
-        user_inputs["activity"] = 1
+    if physical_activity == "low":
+        user_inputs["activity"] = 0
+    elif physical_activity == "medium":
+        user_inputs["activity"] = 0.5
     elif physical_activity == "high":
-        user_inputs["activity"] = 2
+        user_inputs["activity"] = 1
     
-    # If personal_diabetes == "1", let's set user_inputs["diabetes"] = 1, for instance
+    # Obviously if the user says they have a condition then output that as 1 or high risk
     personal_diabetes = form.get('personal_diabetes', '0')
     if personal_diabetes == "1":
         user_inputs["diabetes"] = 1
-    
-    # Similarly, if personal_heart == "1":
+
     personal_heart = form.get('personal_heart', '0')
     if personal_heart == "1":
         user_inputs["heart_disease"] = 1
     
-    # Add logic for personal/family stroke, liver, etc. as needed.
-    # For example, there's no direct place in your code for "liver_disease" or "stroke",
-    # so you'd have to decide how you want them to be used or if they're placeholders for
-    # the final predictions.
+    # Note: Though not necessary with our current datasets, we add the option to input other
+    # family or personal history even if the model doesn't actually use it. This could be implemented
+    # in the future with more data.
 
-    # 3) Get predictions from your model
-    results = get_disease_risk(user_inputs)  # returns dict { "cancer": "High Risk", ... }
+    # Get dictionary of predictions
+    results = get_disease_risk(user_inputs)
 
-    # 4) Return the results.
-    # Option A: Return JSON for an AJAX request
-    # return jsonify(results)
-    #
-    # Option B: Render a simple results page
-    # For a quick approach, we'll just return the JSON text:
+    # Return JSON output as a website popup
     return jsonify(results)
 
-
-############################################################
-# 4) Run the app
-############################################################
+# Run app
 if __name__ == "__main__":
     app.run(debug=True)

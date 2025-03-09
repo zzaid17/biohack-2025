@@ -1,4 +1,4 @@
-/* Use the Poppins font for everything */
+/* Poppins font */
 * {
   box-sizing: border-box;
 }
@@ -9,7 +9,7 @@ html, body {
   color: #333;
 }
 
-/* Lighter blue gradient background */
+/* Background */
 body {
   background: linear-gradient(135deg, #5dade2 0%, #2980b9 100%);
   min-height: 100vh;
@@ -18,11 +18,11 @@ body {
 /* Header */
 header {
   position: relative;
-  text-align: center; /* center the title and subtitle */
-  padding: 2rem 0; /* increased top padding for more space above title */
+  text-align: center;
+  padding: 2rem 0;
 }
 
-/* Logo in the top-left (twice as large) */
+/* Logo */
 .logo {
   position: absolute;
   top: 10px;
@@ -30,12 +30,13 @@ header {
   width: 140px; 
   height: 140px;
 }
+
 .logo svg {
   width: 100%;
   height: 100%;
 }
 
-/* Title bigger */
+/* Title */
 header h1 {
   font-size: 4rem; /* increased from 3rem to 4rem */
   margin: 0;
@@ -43,12 +44,12 @@ header h1 {
   font-weight: 700;
 }
 
-/* Subtitle bigger, less space below it */
+/* Subtitle (names)*/
 header .subtitle {
   font-size: 1.2rem; /* bigger text */
   color: #f0f0f0;
   margin-top: 0.5rem;
-  margin-bottom: 0;  /* remove extra bottom spacing */
+  margin-bottom: -40px;  /* remove extra bottom spacing */
   max-width: 800px;
   margin-left: auto;
   margin-right: auto;
@@ -63,7 +64,7 @@ main {
   padding: 2rem;
 }
 
-/* Form container: wider max-width */
+/* Form container */
 .container {
   background: #fff;
   border-radius: 8px;
@@ -90,7 +91,7 @@ main {
   display: block;
 }
 
-/* Larger dropdowns and inputs */
+/* Dropdowns and inputs styling */
 .form-group select,
 .form-group input[type="number"],
 .form-group input[type="text"] {
@@ -108,9 +109,8 @@ main {
   border-color: #2980b9;
 }
 
-/* Toggle groups: reduced margin above them */
 .toggle-group {
-  margin: 1rem 0; /* was 1.5rem */
+  margin: 1rem 0;
 }
 
 .toggle-group h3 {
@@ -118,85 +118,80 @@ main {
   margin-bottom: 0.5rem;
 }
 
-/* More gap between buttons, bold text */
+/* Button styling */
 .toggle-buttons {
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-between;
-  gap: 1rem; /* was 0.5rem */
+  gap: 1rem;
 }
 
 .toggle-btn {
   flex: 1;
   padding: 0.75rem 1rem;
   font-size: 1.2rem;
-  font-weight: bold; /* bold text */
+  font-weight: bold;
   border: none;
   border-radius: 4px;
-  background-color: #3498db; /* Blue base */
+  background-color: #3498db;
   color: #fff;
   cursor: pointer;
   text-align: center;
-  transition: background-color 0.2s, transform 0.2s; /* for color & size transition */
+  transition: background-color 0.2s, transform 0.2s;
 }
 
-/* Scale up on hover, return to normal on mouseout */
+/* Styling on button hover and click */
 .toggle-btn:hover {
-  background-color: #2980b9; /* darken on hover */
+  background-color: #2980b9;
   transform: scale(1.1);
 }
 
-/* .selected changes color, but no longer scales up on selection */
 .toggle-btn.selected {
-  background-color: #1f5f80; /* even darker shade when active */
+  background-color: #1f5f80;
 }
 
-/* Submit button: bigger, bold text, margin-top for spacing, same hover scale */
 .button-group {
   display: flex;
   justify-content: center;
-  margin-top: 3rem; /* add more space above button */
+  margin-top: 3rem;
 }
 
 .submit-btn {
-  padding: 1rem 2rem;   /* bigger */
-  font-size: 1.4rem;    /* bigger text */
-  font-weight: bold;    /* bold text */
+  padding: 1rem 2rem;
+  font-size: 1.4rem;
+  font-weight: bold;
   border: none;
   border-radius: 4px;
   background: #3498db;
   color: #fff;
   cursor: pointer;
-  transition: background-color 0.2s, transform 0.2s; /* for same scale effect */
+  transition: background-color 0.2s, transform 0.2s;
 }
 
 .submit-btn:hover {
   background: #2980b9;
-  transform: scale(1.1); /* enlarge on hover */
+  transform: scale(1.1);
 }
 
-/* ====== Modal Styles ====== */
+/* ====== Popup Modal ====== */
 
-/* Overlay covers full screen */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,0.5); /* translucent background */
+  background-color: rgba(0,0,0,0.5);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 999; /* on top */
 }
 
-/* Hidden by default */
 .hidden {
   display: none !important;
 }
 
-/* Modal content box */
 .modal-content {
   background: #fff;
   padding: 2rem;
@@ -206,7 +201,21 @@ main {
   position: relative;
 }
 
-/* Close button (X) in corner */
+.modal-content h2 {
+  text-align: center;
+}
+
+.modal-content table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.modal-content table th,
+.modal-content table td {
+  padding: 0.5rem;
+}
+
 .close-button {
   position: absolute;
   top: 10px;

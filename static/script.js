@@ -1,7 +1,7 @@
 /* 
    script.js
-   1) Toggle button logic for family/personal history
-   2) Intercept form submission -> fetch predictions
+   1) Toggle Button Logic
+   2) Intercept Form Submission -> fetch predictions
    3) Show results in a modal
 */
 
@@ -36,11 +36,25 @@ predictionForm.addEventListener('submit', async function(event) {
     // data should look like:
     // { "cancer": "High Risk", "diabetes": "Low Risk", ... }
 
+    // Create a mapping of disease keys to desired display names
+    const diseaseNames = {
+      cancer: "Cancer",
+      diabetes: "Diabetes",
+      heart: "Heart Disease",
+      liver: "Liver Disease",
+      stroke: "Stroke"
+    };
+
     // Build results HTML
     let html = '<table style="width:100%;">';
     html += '<tr><th>Disease</th><th>Risk</th></tr>';
+
     for (const disease in data) {
-      html += `<tr><td>${disease.toUpperCase()}</td><td>${data[disease]}</td></tr>`;
+      // Use the mapping if it exists, otherwise just capitalize the first letter
+      // or leave it as-is. Here, we default to normal case if not in the map.
+      const displayName = diseaseNames[disease] || disease;
+
+      html += `<tr><td>${displayName}</td><td>${data[disease]}</td></tr>`;
     }
     html += '</table>';
 
