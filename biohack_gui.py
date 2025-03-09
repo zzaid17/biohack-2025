@@ -62,10 +62,10 @@ curr_prompts = ["Name", "Age", "BMI", "Gender"]
 
 # Name
 name_var = tk.StringVar()
-name_label = tk.Label(root, text="1. What is your name? ", font=LABEL_FONT, padx=10, anchor="w")
+name_label = tk.Label(root, text="1. What is your name? ", font=LABEL_FONT, padx=10, anchor="w", bg=BG_COLOR, fg=TEXT_COLOR)
 name_label.grid(row=2, column=0, sticky="w", pady=(20,5))
 
-name = tk.Entry(root, textvariable=name_var, font=ENTRY_FONT)
+name = tk.Entry(root, textvariable=name_var, font=ENTRY_FONT, bg=INPUT_BG, fg=INPUT_FG)
 name.grid(row=2, column=1, sticky="ew", columnspan=2, pady=5)
 
 # Age
@@ -73,7 +73,7 @@ age_var = tk.IntVar()
 age_label = tk.Label(root, text="2. What is your age? ", font=LABEL_FONT, padx=10, anchor="w")
 age_label.grid(row=3, column=0, sticky="w", pady=5)
 
-age = tk.Entry(root, textvariable=age_var)
+age = tk.Entry(root, textvariable=age_var, bg=INPUT_BG, fg=INPUT_FG)
 age.grid(row=3, column=1, sticky="ew", columnspan=2, pady=5)
 age_var.set(0)
 
@@ -84,7 +84,7 @@ gender_label.grid(row=4, column=0, sticky="w", pady=5)
 
 gender_values = ["---", "Male", "Female", "Other"]
 
-gender = ttk.Combobox(root, values=gender_values, textvariable=gender_var)
+gender = ttk.Combobox(root, values=gender_values, textvariable=gender_var, bg=INPUT_BG, fg=INPUT_FG)
 gender.grid(row=4, column=1, sticky="ew", columnspan=2)
 gender.set(gender_values[0]) # Set default value and gender.get() for chosen value
 
@@ -93,7 +93,7 @@ bmi_var = tk.IntVar()
 bmi_label = tk.Label(root, text="4. What is your Body Mass Index (BMI): ", font=LABEL_FONT, padx=10, anchor="w")
 bmi_label.grid(row=5, column=0, sticky="w", pady=5)
 
-bmi = tk.Entry(root, textvariable=bmi_var)
+bmi = tk.Entry(root, textvariable=bmi_var, bg=INPUT_BG, fg=INPUT_FG)
 bmi.grid(row=5, column=1, sticky="ew", columnspan=2, pady=5)
 bmi_var.set(0)
 
@@ -130,14 +130,17 @@ diseases_label.grid(row=curr_len, column=0, columnspan=2, sticky="ew")
 
 curr_len += 1
 
-checkbox_frame = tk.Frame(root, bg="white")
+checkbox_frame = tk.Frame(root, bg=BG_COLOR)
 checkbox_frame.grid(row=curr_len, column=0, columnspan=2, pady=5)
 
 # Add Buttons to frame
 for i, disease in enumerate(diseases):
     #curr_len = curr_len + i + 1
     selected_diseases[disease] = tk.BooleanVar()
-    chk = tk.Checkbutton(checkbox_frame, text=disease, font=BUTTON_FONT, variable=selected_diseases[disease], anchor="center")
+    chk = tk.Checkbutton(checkbox_frame, text=disease, font=BUTTON_FONT, variable=selected_diseases[disease],
+                     anchor="w", bg=BG_COLOR, fg=TEXT_COLOR, activebackground=BG_COLOR,
+                     activeforeground=TEXT_COLOR, selectcolor=BG_COLOR)  # Removes white select box
+
     chk.pack(fill="x", anchor="w", padx=20, pady=2)
    
 # Functions
