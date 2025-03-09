@@ -22,6 +22,9 @@ pip install tensorflow pandas scikit-learn numpy matplotlib flask
 ```
 BIOHACK-2025/
 ├── data/               # all data files
+│   ├── cleaned-files/  # processed and cleaned data files
+│   ├── input-files/    # input data ready for use
+│   └── original-files/ # raw files
 ├── gui/                # old tkinter UI components [abandoned]
 ├── models/             # trained models 
 ├── static/             # static files 
