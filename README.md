@@ -53,7 +53,7 @@ We used one dataset for each major condition - cancer, diabetes, heart disease, 
 | hypertension   | -0.005096       |
 | smoking        | 0.006163        |
 
-**Liver:**
+**Liver Disease:**
 
 |**Predictor**   | **Correlation** |
 |----------------|-----------------|
@@ -80,21 +80,7 @@ We used one dataset for each major condition - cancer, diabetes, heart disease, 
 | hypertension   | 0.143647        |
 | smoking        | 0.034922        |
 
-It should be noted that most of the predictors yielded significant correlation factors except in the case of the heart disease dataset. **write more about why cuz idk**
-
 # Models
-
-**Heart Disease:**
-
-| **Model**              | **Accuracy** |
-|------------------------|-------------:|
-| LDA                    | 0.7968       |
-| Naive Bayes            | 0.7968       |
-| QDA                    | 0.7968       |
-| Logistic Regression    | 0.7968       |
-| Random Forest          | 0.7824       |
-| KNN                    | 0.7678       |
-| Decision Tree          | 0.6651       |
 
 **Cancer:**
 
@@ -119,6 +105,18 @@ It should be noted that most of the predictors yielded significant correlation f
 | Decision Tree          | 0.8786       |
 | Naive Bayes            | 0.8686       |
 | QDA                    | 0.8665       |
+
+**Heart Disease:**
+
+| **Model**              | **Accuracy** |
+|------------------------|-------------:|
+| LDA                    | 0.7968       |
+| Naive Bayes            | 0.7968       |
+| QDA                    | 0.7968       |
+| Logistic Regression    | 0.7968       |
+| Random Forest          | 0.7824       |
+| KNN                    | 0.7678       |
+| Decision Tree          | 0.6651       |
 
 **Liver Disease:**
 
@@ -147,7 +145,19 @@ It should be noted that most of the predictors yielded significant correlation f
 
 # Results
 
-TODO: Insert best model and final accuracy for each dataset
+It should be noted that most of the predictors yielded high correlation values except in the case of the heart disease dataset. Correlation does not always align with model prediction accuracy. For example, the correlation values represent the linear relationship between the predictor and classification, and this may not be accurate in the case of non-linear relationships.
+
+For the diabetes and stroke datasets, logistic regression resulted in the highest prediction accuracy. For cancer and liver disease, random forest proved most effective. For heart disease, logistic regression, LDA, QDA, and Native Bayes, tied for first place. It should be noted that despite the extremely low correlation factors, these four models were able to classify heart disease with 79.68% accuracy.
+
+**Final Prediction Accuracies:**
+
+| **Dataset**       | **Best Model**           | **Accuracy** |
+|-------------------|--------------------------|-------------:|
+| Cancer            | Random Forest            | 86.33%       |
+| Diabetes          | Logistic Regression      | 91.47%       |
+| Heart Disease     | Tie                      | 79.68%       |
+| Liver Disease     | Random Forest            | 76.00%       |
+| Stroke            | Logistic Regression      | 94.75%       |
 
 # References
 
