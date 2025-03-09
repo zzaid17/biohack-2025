@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Background -->
+  <rect width="200" height="200" rx="40" ry="40" fill="#3498db"/>
+  
+  <!-- DNA Helix Symbol -->
+  <g transform="translate(100, -20) rotate(45) scale(0.55)">
+    <!-- First DNA strand -->
+    <path d="M60,20 Q90,70 60,120 Q90,170 60,220" stroke="#ffffff" stroke-width="12" fill="none"/>
+    
+    <!-- Second DNA strand -->
+    <path d="M180,20 Q150,70 180,120 Q150,170 180,220" stroke="#ffffff" stroke-width="12" fill="none"/>
+    
+    <!-- Connecting bases (reduced) -->
+    <line x1="60" y1="70" x2="180" y2="70" stroke="#2ecc71" stroke-width="10"/>
+    <line x1="60" y1="120" x2="180" y2="120" stroke="#f39c12" stroke-width="10"/>
+    <line x1="60" y1="170" x2="180" y2="170" stroke="#9b59b6" stroke-width="10"/>
+  </g>
+  
+  <!-- "ZION" text - Moved down 10px and enlarged -->
+  <text x="100" y="180" font-family="Arial, sans-serif" font-size="42" font-weight="bold" text-anchor="middle" fill="#ffffff">ZION</text>
+</svg>
