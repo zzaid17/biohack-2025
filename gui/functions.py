@@ -88,12 +88,22 @@ def predict_diseases(inputs: dict, models: dict) -> dict:
     
     return results
 
-# Load models once when the module is imported
+# load models when module is imported
 models = load_models()
 
-def get_disease_risk(user_inputs):
-    """ Public function to get disease risk predictions based on user input """
-    return predict_diseases(user_inputs, models)
+def get_disease_risk(user_inputs: dict) -> dict:
+    """ 
+    Public function to get disease risk predictions based on user input 
+
+    Args:
+    user_inputs (dict): a dictionary of user input data
+
+    Returns:
+    results (dict): a dictionary of disease risk predictions
+    """
+
+    results = predict_diseases(user_inputs, models)
+    return results
 
 
 if __name__ == "__main__":
