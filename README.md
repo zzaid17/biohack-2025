@@ -8,9 +8,79 @@ This repository is a submission for BioHacks 2025, a two-day hackathon at the Un
 
 Our group developed a data-driven tool that aims to simplify medical diagnoses by implementing a suite of machine learning models that can accurately analyze and interpret patient data for disease detection. The project is complete with a fully functional user-friendly interface that allows the user to input their symptoms and provide any other relevant information, returning a diagnosis based on our models' predictions.
 
-We used one dataset for each major condition - cancer, diabetes, heart disease, liver disease, and stroke. Our initial data analysis consisted of data cleaning, mix-max normalization, and calculating the correlation values for each dataset. We then used scikit-learn to implement our Random Forest, LDA, Logistic Regression, QDA, Native Bayes, Decision Tree, and KNN models.
+We used one dataset for each major condition - cancer, diabetes, heart disease, liver disease, and stroke. Our initial data analysis consisted of data cleaning, mix-max normalization, and calculating the correlation values for each dataset. We then used scikit-learn to evaluate Random Forest, LDA, Logistic Regression, QDA, Native Bayes, Decision Tree, and KNN models using 10-fold cross validation. Upon determining the ideal model for each dataset, final models were trained and dumped to `.pkl` files for later use in the GUI when predicting on new data.
 
-# Correlation Values
+# Prerequisites
+
+This project was created using python, and as such the user must have it installed. Once python is installed, run the following command to ensure all pre-requisites are met:
+```
+pip install tensorflow pandas scikit-learn numpy matplotlib flask
+```
+
+# File Structure
+
+```
+BIOHACK-2025/
+├── data/               # all data files
+│   ├── cleaned-files/  # processed and cleaned data files
+│   ├── input-files/    # input data ready for use
+│   └── original-files/ # raw files
+├── gui/                # old tkinter UI components [abandoned]
+├── models/             # trained models 
+├── static/             # static files 
+├── templates/          # HTML templates
+├── app.py              # app entry
+├── data-cleaning.ipynb # data processing notebook
+├── neural-nets.ipynb   # neural network evaluation
+├── scikit-learn-modelling.ipynb # tradition machine learning evaluation
+└── README.md           # this file
+```
+
+# How To Run
+1. Ensure all prerequisites are met.
+2. Download and clone this repository.
+3. Navigate to the local clone of the repository.
+4. Run any of the below files depending on what you would like to view:
+    - `data-cleaning.ipynb`: A jupyter notebook where the raw datasets were cleaned and re-saved.
+    - `neural-nets.ipynb`: A brief analysis into the effectiveness of neural networks on the datasets.
+    - `scikit-learn-modelling.ipynb`: An in-depth analysis of the data, evaluation of models, and eventual saving of models.
+    - `python app.py`: This launches the final GUI web app.
+
+# Results
+
+It should be noted that most of the predictors yielded high correlation values except in the case of the heart disease dataset. Correlation does not always align with model prediction accuracy. For example, the correlation values represent the linear relationship between the predictor and classification, and this may not be accurate in the case of non-linear relationships.
+
+For the diabetes and stroke datasets, logistic regression resulted in the highest prediction accuracy. For cancer and liver disease, random forest proved most effective. For heart disease, logistic regression, LDA, QDA, and Native Bayes, tied for first place. It should be noted that despite the extremely low correlation factors, these four models were able to classify heart disease with 79.68% accuracy.
+
+**Final Prediction Accuracies:**
+
+| **Dataset**       | **Best Model**           | **Accuracy** |
+|-------------------|--------------------------|-------------:|
+| Cancer            | Random Forest            | 86.33%       |
+| Diabetes          | Logistic Regression      | 91.47%       |
+| Heart Disease     | Tie                      | 79.68%       |
+| Liver Disease     | Random Forest            | 76.00%       |
+| Stroke            | Logistic Regression      | 94.75%       |
+
+# References
+
+**[1]** Soriano, F. (2021). Stroke Prediction Dataset. Kaggle. Available: https://www.kaggle.com/datasets/fedesoriano/stroke-prediction-dataset
+(Accessed: Mar. 8, 2025)
+
+**[2]** El Kharoua, R. (2025). Cancer Prediction Dataset. Kaggle. Available:  https://www.kaggle.com/datasets/rabieelkharoua/cancer-prediction-dataset  
+(Accessed: Mar. 8, 2025)
+
+**[3]** Mustafa, T. (2025). Diabetes Prediction Dataset. Kaggle. Available:  https://www.kaggle.com/datasets/iammustafatz/diabetes-prediction-dataset
+(Accessed: Mar. 8, 2025)
+
+**[4]** Rdeki, O. (2025). Heart Disease. Kaggle. Available: https://www.kaggle.com/datasets/oktayrdeki/heart-disease 
+(Accessed: Mar. 8, 2025)
+
+**[5]** El Kharoua, R. (2024). Predict Liver Disease: 1700 Records Dataset. Kaggle. Available: https://www.kaggle.com/datasets/rabieelkharoua/predict-liver-disease-1700-records-dataset
+(Accessed: Mar. 8, 2025)
+
+# Appendix
+## Correlation Values
 
 **Cancer:**
 
@@ -80,7 +150,7 @@ We used one dataset for each major condition - cancer, diabetes, heart disease, 
 | hypertension   | 0.143647        |
 | smoking        | 0.034922        |
 
-# Models
+## Models
 
 **Cancer:**
 
@@ -142,36 +212,3 @@ We used one dataset for each major condition - cancer, diabetes, heart disease, 
 | QDA                    | 0.8958       |
 | Naive Bayes            | 0.8862       |
 
-
-# Results
-
-It should be noted that most of the predictors yielded high correlation values except in the case of the heart disease dataset. Correlation does not always align with model prediction accuracy. For example, the correlation values represent the linear relationship between the predictor and classification, and this may not be accurate in the case of non-linear relationships.
-
-For the diabetes and stroke datasets, logistic regression resulted in the highest prediction accuracy. For cancer and liver disease, random forest proved most effective. For heart disease, logistic regression, LDA, QDA, and Native Bayes, tied for first place. It should be noted that despite the extremely low correlation factors, these four models were able to classify heart disease with 79.68% accuracy.
-
-**Final Prediction Accuracies:**
-
-| **Dataset**       | **Best Model**           | **Accuracy** |
-|-------------------|--------------------------|-------------:|
-| Cancer            | Random Forest            | 86.33%       |
-| Diabetes          | Logistic Regression      | 91.47%       |
-| Heart Disease     | Tie                      | 79.68%       |
-| Liver Disease     | Random Forest            | 76.00%       |
-| Stroke            | Logistic Regression      | 94.75%       |
-
-# References
-
-**[1]** Soriano, F. (2021). Stroke Prediction Dataset. Kaggle. Available: https://www.kaggle.com/datasets/fedesoriano/stroke-prediction-dataset
-(Accessed: Mar. 8, 2025)
-
-**[2]** El Kharoua, R. (2025). Cancer Prediction Dataset. Kaggle. Available:  https://www.kaggle.com/datasets/rabieelkharoua/cancer-prediction-dataset  
-(Accessed: Mar. 8, 2025)
-
-**[3]** Mustafa, T. (2025). Diabetes Prediction Dataset. Kaggle. Available:  https://www.kaggle.com/datasets/iammustafatz/diabetes-prediction-dataset
-(Accessed: Mar. 8, 2025)
-
-**[4]** Rdeki, O. (2025). Heart Disease. Kaggle. Available: https://www.kaggle.com/datasets/oktayrdeki/heart-disease 
-(Accessed: Mar. 8, 2025)
-
-**[5]** El Kharoua, R. (2024). Predict Liver Disease: 1700 Records Dataset. Kaggle. Available: https://www.kaggle.com/datasets/rabieelkharoua/predict-liver-disease-1700-records-dataset
-(Accessed: Mar. 8, 2025)
