@@ -1,83 +1,94 @@
 # Imports
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, messagebox
 
-
+# GUI initialization
 root = tk.Tk()
+root.title("BioHack 2025")
+root.iconbitmap("download.jpeg")
+root.geometry("550x400")
+root.resizable(False, False)
+
+# Global font selection
+LABEL_FONT = ("Arial", 10, "bold")
+ENTRY_FONT = ("Arial", 10, "bold")
+BUTTON_FONT = ("Arial", 10, "bold")
 
 # Responses
 responses_dict = {}
 
+#Current prompts
+curr_prompts = ["Name", "Age", "BMI", "Gender"]
+
 # Name
 name_var = tk.StringVar()
 name_label = tk.Label(root, text="1. What is your name? ")
-name_label.grid(row=0, column=0)
+name_label.grid(row=0, column=0, sticky="w")
 
 name = tk.Entry(root, textvariable=name_var)
-name.grid(row=0, column=1)
-responses_dict["Name"] = name.get()
+name.grid(row=0, column=1, columnspan=2)
 
 # Age
 age_var = tk.StringVar()
-age_label = tk.Label(root, text="What is your age? ")
-age_label.grid(row=1, column=0)
+age_label = tk.Label(root, text="2. What is your age? ")
+age_label.grid(row=1, column=0, sticky="w")
 
 age = tk.Entry(root, textvariable=age_var)
-age.grid(row=1, column=1)
-responses_dict["Age"] = age_var.get()
+age.grid(row=1, column=1, sticky="ew", columnspan=2)
 
 # Gender
 gender_var = tk.StringVar()
-gender_label = tk.Label(root, text="Choose Gender: ")
-gender_label.grid(row=2, column=0)
+gender_label = tk.Label(root, text="3. Choose Gender: ")
+gender_label.grid(row=2, column=0, sticky="w")
 
 gender = ttk.Combobox(root, values=["Male", "Female", "Other"], textvariable=gender_var)
-gender.grid(row=2, column=1)
+gender.grid(row=2, column=1, sticky="ew", columnspan=2)
 gender.set("Male") # Set default value and gender.get() for chosen value
-responses_dict["Gender"] = gender.get()
 
 # BMI
 bmi_var = tk.IntVar()
-bmi_label = tk.Label(root, text="What is your Body Mass Index(BMI): ")
-bmi_label.grid(row=3, column=0)
+bmi_label = tk.Label(root, text="4. What is your Body Mass Index(BMI): ")
+bmi_label.grid(row=3, column=0, sticky="w")
 
 bmi = tk.Entry(root, textvariable=bmi_var)
-bmi.grid(row=3, column=1)
-responses_dict["BMI"] = bmi_var.get()
+bmi.grid(row=3, column=1, sticky="ew", columnspan=2)
 
 # Other prompts
-prompts = [ "Do you smoke? ",
-            "Do you drink? ", 
-            "Do you have high blood pressure? ",
-            "What is your cholesterol level? "]
+prompts = [ "5. Do you smoke? ",
+            "6. Do you drink? ", 
+            "7. Do you have high blood pressure? "]
 
 prompts_options = ["Yes", "No"]
 
-prompt_keys = ["Blood Pressure", "Cholesterol", "Drink", "Smoke"]
+prompt_keys = ["Blood Pressure", "Drink", "Smoke"]
 
 prompt_vars = {}
 
-for i, prompt in enumerate(prompts):
-   my_row = 4+i
-   tk.Label(root, text=prompt).grid(row=my_row, column=0)
+curr_len = len(curr_prompts)
 
+for i, prompt in enumerate(prompts):
+   curr_len = curr_len+i
+   tk.Label(root, text=prompt).grid(row=curr_len, column=0, sticky="w")
    var = tk.StringVar()
    prompt_vars[prompt_keys[i]] = var
-   combobox = ttk.Combobox(root, values=prompt_keys, textvariable=var)
-   combobox.grid(row=my_row, column=1)
+   combobox = ttk.Combobox(root, values=prompts_options, textvariable=var)
+   combobox.grid(row=curr_len, column=1, sticky="ew", columnspan=2)
    combobox.set(prompts_options[1])
+
+curr_len = curr_len+len(prompt_keys)
 
 # Diseases 
 selected_diseases = {}
 diseases = ["Cancer", "Diabetes", "Heart Diseases", "Liver Problems", "Stroke"]
 
 diseases_label = tk.Label(root, text="Do you have a history with any disease below? Check all that apply.")
-diseases_label.grid(row=4+len(prompt_keys), column=0)
+diseases_label.grid(row=curr_len, column=0, sticky="w")
 
 for i, disease in enumerate(diseases):
+    curr_len = curr_len + i
     selected_diseases[disease] = tk.BooleanVar()
     chk = tk.Checkbutton(root, text=disease, variable=selected_diseases[disease])
-    chk.grid(row=4 +len(prompt_keys) + i, column=0, sticky="w")
+    chk.grid(row=curr_len, column=0, sticky="ew", columnspan=2)
    
 # Functions
 def collect_responses(): #This tests all values were properly gotten
@@ -93,9 +104,11 @@ def collect_responses(): #This tests all values were properly gotten
     for disease in diseases:
      responses_dict[disease] = selected_diseases[disease].get()
 
-    print(responses_dict)
+    #tk.Label(root, text=f"{responses_dict}").grid(row = curr_len+1, column=0)
+    messagebox.showinfo("Collected Data", f"Here are your final responses: {responses_dict}")
 
+curr_len = curr_len+1
 final_vals_button = tk.Button(root, text="final values: ", command=collect_responses)
-final_vals_button.grid(row=9+len(diseases), column=0, sticky='e')
+final_vals_button.grid(row=curr_len, column=0, sticky='ew', columnspan=2)
 
 root.mainloop()
