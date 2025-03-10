@@ -52,6 +52,9 @@ It should be noted that most of the predictors yielded high correlation values e
 
 For the diabetes and stroke datasets, logistic regression resulted in the highest prediction accuracy. For cancer and liver disease, random forest proved most effective. For heart disease, logistic regression, LDA, QDA, and Native Bayes, tied for first place. It should be noted that despite the extremely low correlation factors, these four models were able to classify heart disease with 79.68% accuracy.
 
+**Final App**
+![Gif](images\GUI-working.gif)
+
 **Final Prediction Accuracies:**
 
 | **Dataset**       | **Best Model**           | **Accuracy** |
