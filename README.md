@@ -4,7 +4,7 @@
 
 # Summary
 
-This repository is a submission for BioHacks 2025, a two-day hackathon at the University of Calgary.
+This repository is contains the first-placed submission at BioHacks 2025, a two-day hackathon at the University of Calgary.
 
 Our group developed a data-driven tool that aims to simplify medical diagnoses by implementing a suite of machine learning models that can accurately analyze and interpret patient data for disease detection. The project is complete with a fully functional user-friendly interface that allows the user to input their symptoms and provide any other relevant information, returning a diagnosis based on our models' predictions.
 
@@ -53,7 +53,7 @@ It should be noted that most of the predictors yielded high correlation values e
 For the diabetes and stroke datasets, logistic regression resulted in the highest prediction accuracy. For cancer and liver disease, random forest proved most effective. For heart disease, logistic regression, LDA, QDA, and Native Bayes, tied for first place. It should be noted that despite the extremely low correlation factors, these four models were able to classify heart disease with 79.68% accuracy.
 
 **Final App**
-![Gif](images\GUI-working.gif)
+![Gif](.\images\GUI-working.gif)
 
 **Final Prediction Accuracies:**
 
