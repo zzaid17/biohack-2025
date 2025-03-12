@@ -4,7 +4,7 @@
 
 # Summary
 
-This repository contains the winning submission at BioHacks 2025, a two-day hackathon at the University of Calgary.
+This repository contains the winning submission for BioHacks 2025, a two-day hackathon at the University of Calgary.
 
 Our group developed a data-driven tool that aims to simplify medical diagnoses by implementing a suite of machine learning models that can accurately analyze and interpret patient data for disease detection. The project is complete with a fully functional user-friendly interface that allows the user to input their symptoms and provide any other relevant information, returning a diagnosis based on our models' predictions.
 
