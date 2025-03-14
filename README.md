@@ -8,11 +8,11 @@ This repository contains the winning submission for BioHacks 2025, a two-day hac
 
 Our group developed a data-driven tool that aims to simplify medical diagnoses by implementing a suite of machine learning models that can accurately analyze and interpret patient data for disease detection. The project is complete with a fully functional user-friendly interface that allows the user to input their symptoms and provide any other relevant information, returning a diagnosis based on our models' predictions.
 
-We used one dataset for each major condition - cancer, diabetes, heart disease, liver disease, and stroke. Our initial data analysis consisted of data cleaning, mix-max normalization, and calculating the correlation values for each dataset. We then used scikit-learn to evaluate Random Forest, LDA, Logistic Regression, QDA, Native Bayes, Decision Tree, and KNN models using 10-fold cross validation. Upon determining the ideal model for each dataset, final models were trained and dumped to `.pkl` files for later use in the GUI when predicting on new data.
+We used one dataset for each major condition - cancer, diabetes, heart disease, liver disease, and stroke. Our initial data analysis consisted of data cleaning, min-max normalization, and calculating the correlation values for each dataset. We then used scikit-learn to evaluate Random Forest, LDA, Logistic Regression, QDA, Native Bayes, Decision Tree, and KNN models using 10-fold cross validation. Upon determining the ideal model for each dataset, final models were trained and dumped to `.pkl` files for later use in the GUI when predicting on new data.
 
 # Prerequisites
 
-This project was created using python, and as such the user must have it installed. Once python is installed, run the following command to ensure all pre-requisites are met:
+This project was created using Python, and as such the user must have it installed. Once Python is installed, run the following command to ensure all prerequisites are met:
 ```
 pip install tensorflow pandas scikit-learn numpy matplotlib flask
 ```
@@ -21,19 +21,19 @@ pip install tensorflow pandas scikit-learn numpy matplotlib flask
 
 ```
 BIOHACK-2025/
-├── data/               # all data files
-│   ├── cleaned-files/  # processed and cleaned data files
-│   ├── input-files/    # input data ready for use
-│   └── original-files/ # raw files
-├── gui/                # old tkinter UI components [abandoned]
-├── models/             # trained models 
-├── static/             # static files 
-├── templates/          # HTML templates
-├── app.py              # app entry
-├── data-cleaning.ipynb # data processing notebook
-├── neural-nets.ipynb   # neural network evaluation
+├── data/                        # all data files
+│   ├── cleaned-files/           # processed and cleaned data files
+│   ├── input-files/             # input data ready for use
+│   └── original-files/          # raw files
+├── gui/                         # old tkinter UI components [abandoned]
+├── models/                      # trained models 
+├── static/                      # static files 
+├── templates/                   # HTML templates
+├── app.py                       # app entry
+├── data-cleaning.ipynb          # data processing notebook
+├── neural-nets.ipynb            # neural network evaluation
 ├── scikit-learn-modelling.ipynb # tradition machine learning evaluation
-└── README.md           # this file
+└── README.md                    # this file
 ```
 
 # How To Run
